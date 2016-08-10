@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.4">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers/>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.10">
+    <script>node {
+   // Mark the code checkout &apos;stage&apos;....
+   stage &apos;Checkout&apos;
+
+   // Get some code from a GitHub repository
+   git url: &apos;https://github.com/robmorgan/phinx.git&apos;
+
+   // Mark the code tools &apos;stage&apos;....
+   stage &apos;Install tools&apos;
+   sh &quot;composer install --dev&quot;
+
+   // Mark the code build &apos;stage&apos;....
+   stage &apos;Build&apos;
+   // Run the phpunit tests
+   sh &quot;vendor/bin/phpunit tests/Phinx/Config --coverage-text&quot;
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+</flow-definition>
